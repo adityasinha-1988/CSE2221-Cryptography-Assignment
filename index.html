@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE2221 | Practical Cryptography Assignment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; /* Modern Blue */
+            --primary-dark: #1e40af;
+            --secondary: #0f172a; /* Slate Dark */
+            --accent: #ef4444; /* Alert Red */
+            --bg: #f8fafc; /* Light Blue-Grey */
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Layout */
+        .wrapper {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Header Card */
+        .header-card {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e293b 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .course-tag {
+            background: rgba(255,255,255,0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .meta-item {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Action Section */
+        .action-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+
+        .deadline-text {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+        }
+
+        .note-text {
+            display: block;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* Content Sections */
+        section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+        }
+
+        /* Alert Box */
+        .alert-box {
+            background-color: #fef2f2;
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 25px;
+        }
+
+        .alert-title {
+            color: #991b1b;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .alert-box ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .alert-box li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: #7f1d1d;
+            font-size: 0.95rem;
+        }
+
+        .alert-box li::before {
+            content: "•";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* Task Cards */
+        .module-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            font-weight: 700;
+            margin: 25px 0 15px 0;
+        }
+
+        .task-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+
+        .task-card:hover {
+            border-color: var(--primary);
+        }
+
+        .task-header {
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .task-detail {
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+
+        .highlight {
+            background: #e0e7ff;
+            color: var(--primary-dark);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        /* Rubrics Table */
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .rubric-table th {
+            background: #f1f5f9;
+            text-align: left;
+            padding: 12px;
+            font-weight: 600;
+            color: var(--secondary);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .rubric-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .rubric-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .score-badge {
+            background: var(--secondary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 40px;
+            padding-bottom: 40px;
+        }
+        
+        /* Mobile Tweaks */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .header-card { padding: 25px; }
+            .meta-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    
+    <div class="header-card">
+        <span class="course-tag">CSE2221</span>
+        <h1>Practical Cryptography</h1>
+        <p>Assignment: Visualization of Security Attacks</p>
+        
+        <div class="meta-grid">
+            <div class="meta-item">
+                <span class="meta-label">Format</span>
+                <span class="meta-value">Video Demo</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Total Marks</span>
+                <span class="meta-value">10 Marks</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Tool</span>
+                <span class="meta-value">CrypTool 1/2</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Students</span>
+                <span class="meta-value">Individual / Pair</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-card">
+        <div class="deadline-text">📅 FINAL DEADLINE: MARCH 9, 2026</div>
+        <a href="https://forms.cloud.microsoft/r/qz8fdFvrik" target="_blank" class="btn-submit">Submit Video Link</a>
+        <span class="note-text">Paste your Google Drive or YouTube link directly in the form. No PDF needed.</span>
+    </div>
+
+    <section>
+        <h2>⛔ Critical Protocols (Zero Tolerance)</h2>
+        <div class="alert-box">
+            <span class="alert-title">Failure to follow these rules results in 0 Marks:</span>
+            <ul>
+                <li><strong>Access Permissions:</strong> Links must be accessible. If the evaluator sees "Access Denied", marks = 0. Use "Unlisted" or "Anyone with link".</li>
+                <li><strong>Face Visibility:</strong> The faces of <strong>ALL</strong> team members must be visible on screen while speaking (Webcam/PIP).</li>
+                <li><strong>Unique Inputs:</strong> You must use your <strong>Registration Number</strong> for all inputs. Generic text (e.g., "Hello World") is strictly prohibited.</li>
+            </ul>
+        </div>
+        <div style="font-size: 0.95rem; color: var(--text-main);">
+            <strong>Team Rules:</strong> Max 2 members per team. Both members must speak and perform tasks sequentially using their own Registration Numbers in the video. Teams of 3 are not allowed.
+        </div>
+    </section>
+
+    <section>
+        <h2>📋 Assignment Tasks</h2>
+        <p style="margin-bottom: 20px; color: var(--text-light);">Create a single video (4-8 mins) covering all three modules.</p>
+
+        <div class="module-title">Module A: Symmetric Key</div>
+        
+        <div class="task-card">
+            <div class="task-header">Task 1: Caesar Cipher Analysis</div>
+            <div class="task-detail"><strong>Input:</strong> <code>FirstName_RegistrationNumber</code></div>
+            <div class="task-detail"><strong>Action:</strong> Encrypt using Caesar Cipher. Use the Analysis tool to perform a <strong>Ciphertext-Only Attack</strong>.</div>
+            <div class="task-detail"><strong>Explain:</strong> Why frequency analysis breaks this cipher.</div>
+        </div>
+
+        <div class="task-card">
+            <div class="task-header">Task 2: AES & The Avalanche Effect</div>
+            <div class="task-detail"><strong>Input:</strong> Sentence containing your Registration Number.</div>
+            <div class="task-detail"><strong>Action:</strong> Encrypt (AES-128) → Show Hex. Change <strong>ONE DIGIT</strong> of the Reg No → Encrypt → Compare Hex.</div>
+            <div class="task-detail"><strong>Explain:</strong> How a 1-bit input change causes >50% output change (Avalanche Effect).</div>
+        </div>
+
+        <div class="module-title">Module B: Asymmetric Key</div>
+
+        <div class="task-card">
+            <div class="task-header">Task 3: RSA Digital Signing</div>
+            <div class="task-detail"><strong>Input:</strong> <code>"I, [Reg No], certify this work."</code></div>
+            <div class="task-detail"><strong>Action:</strong> Sign with Private Key → Verify with Public Key.</div>
+            <div class="task-detail"><strong>Explain:</strong> The concept of Non-Repudiation (Signature verification).</div>
+        </div>
+
+        <div class="module-title">Module C: Password Security</div>
+
+        <div class="task-card">
+            <div class="task-header">Task 4: Entropy Analysis</div>
+            <div class="task-detail"><strong>Action:</strong> Use the "Password Quality" tool.</div>
+            <div class="task-detail"><strong>Compare:</strong> Entropy of (Reg No only) vs. (Reg No + Special Char + Name).</div>
+            <div class="task-detail"><strong>Explain:</strong> Bit Strength vs. Brute force time.</div>
+        </div>
+    </section>
+
+    <section>
+        <h2>📊 Evaluation Rubrics</h2>
+        <table class="rubric-table">
+            <thead>
+                <tr>
+                    <th>Criteria</th>
+                    <th style="width: 80px;">Marks</th>
+                    <th>Requirement</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Integrity & Access</strong></td>
+                    <td><span class="score-badge">2</span></td>
+                    <td>Link works instantly. Both faces visible. Unique Reg No used.</td>
+                </tr>
+                <tr>
+                    <td><strong>Symmetric Demo</strong></td>
+                    <td><span class="score-badge">3</span></td>
+                    <td>Caesar recovery shown correctly. AES Hex change clearly demonstrated.</td>
+                </tr>
+                <tr>
+                    <td><strong>Asymmetric Demo</strong></td>
+                    <td><span class="score-badge">3</span></td>
+                    <td>RSA Signing/Verification cycle complete. Correct key usage explanation.</td>
+                </tr>
+                <tr>
+                    <td><strong>Clarity</strong></td>
+                    <td><span class="score-badge">2</span></td>
+                    <td>Clear voice (Human only). Conceptual explanation of "Why", not just "How".</td>
+                </tr>
+                <tr style="background: #f8fafc; font-weight: bold;">
+                    <td>TOTAL</td>
+                    <td><span class="score-badge" style="background: var(--primary);">10</span></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        <p>Department of Computer Science & Engineering<br>CSE2221 Cryptography</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
